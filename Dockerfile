@@ -1,12 +1,3 @@
-
-# Originally derived from: 
-# Oracle Java 8 Dockerfile
-#
-# https://github.com/dockerfile/java
-# https://github.com/dockerfile/java/tree/master/oracle-java8
-#
-
-# Pull base image.
 FROM ubuntu:14.04
 MAINTAINER Jakob Homan <jghoman@gmail.com>
 
