@@ -20,22 +20,23 @@ ENV JAVA_HOME $JAVA7_HOME
 
 # Install other dev-related items
 RUN apt-get install -y \
-  vim \
-  vim-doc \
-  htop \
+  ant \
   autoconf \
-  llvm \
-  pandoc \
-  ncdu \
-  tree \
   build-essential \
-  silversearcher-ag \
+  curl \
+  erlang \
   ghc \
   git \
-  tig \
+  htop \
+  llvm \
+  ncdu \
+  pandoc \
   python \
-  curl \
-  erlang
+  silversearcher-ag \
+  tig \
+  tree \
+  vim \
+  vim-doc
 
 RUN curl -sSL "ftp://mirror.reverse.net/pub/apache/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz" | tar -xz -C /usr/local/bin \
   && ln -s /usr/local/bin/apache-maven-3.3.1/bin/mvn /usr/local/bin/mvn
