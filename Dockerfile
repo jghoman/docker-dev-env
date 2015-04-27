@@ -1,10 +1,10 @@
 FROM ubuntu:14.04
 MAINTAINER Jakob Homan <jghoman@gmail.com>
 
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update
 
 # Install so many JDKs
-RUN sudo apt-get -y install software-properties-common \
+RUN apt-get -y install software-properties-common \
   && add-apt-repository ppa:webupd8team/java -y \
   && apt-get update \
   && (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections) \
