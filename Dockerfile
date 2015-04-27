@@ -1,30 +1,22 @@
 FROM ubuntu:14.04
 MAINTAINER Jakob Homan <jghoman@gmail.com>
 
-RUN apt-get update
-RUN apt-get -y upgrade
+RUN apt-get update && apt-get -y upgrade
 
 # Install so many JDKs
-RUN sudo apt-get -y install software-properties-common
-RUN add-apt-repository ppa:webupd8team/java -y
-RUN apt-get update
-
-RUN (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections)
-
-RUN apt-get install --no-install-recommends -y oracle-java6-installer
-RUN apt-get install --no-install-recommends -y oracle-java7-installer
-RUN apt-get install --no-install-recommends -y oracle-java8-installer
-
-RUN apt-get install --no-install-recommends -y oracle-java7-set-default
+RUN sudo apt-get -y install software-properties-common \
+  && add-apt-repository ppa:webupd8team/java -y \
+  && apt-get update \
+  && (echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections) \
+  && apt-get install --no-install-recommends -y oracle-java6-installer \
+  && apt-get install --no-install-recommends -y oracle-java7-installer \
+  && apt-get install --no-install-recommends -y oracle-java8-installer \
+  && apt-get install --no-install-recommends -y oracle-java7-set-default
 
 ENV JAVA6_HOME /usr/lib/jvm/java-6-oracle
 ENV JAVA7_HOME /usr/lib/jvm/java-7-oracle
 ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA_HOME $JAVA7_HOME
-
-RUN $JAVA6_HOME/bin/java -version
-RUN $JAVA7_HOME/bin/java -version
-RUN $JAVA8_HOME/bin/java -version
 
 # Install other dev-related items
 RUN apt-get install -y \
@@ -63,9 +55,9 @@ VOLUME $HOME/repos
 VOLUME $HOME/.m2
 
 # Install my configs and dot files
-RUN git clone https://github.com/jghoman/dotfiles.git
-RUN git -C dotfiles pull
-RUN dotfiles/scripts/install.sh
+RUN git clone https://github.com/jghoman/dotfiles.git \
+  && git -C dotfiles pull \
+  && dotfiles/scripts/install.sh
 
 # Define default command.
 CMD ["bash"]
