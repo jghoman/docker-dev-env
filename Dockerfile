@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Jakob Homan <jghoman@gmail.com>
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y curl
 
 # Install so many JDKs
 RUN apt-get -y install software-properties-common \
@@ -18,12 +18,27 @@ ENV JAVA7_HOME /usr/lib/jvm/java-7-oracle
 ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA_HOME $JAVA7_HOME
 
+# Maven
+RUN curl -sSL "ftp://mirror.reverse.net/pub/apache/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz" | tar -xz -C /usr/local/bin \
+  && ln -s /usr/local/bin/apache-maven-3.3.1/bin/mvn /usr/local/bin/mvn
+
+# Scalas
+RUN (curl -sSL "http://www.scala-lang.org/files/archive/scala-2.9.3.tgz" | tar -xz -C /usr/local/bin) \
+  && (curl -sSL "http://downloads.typesafe.com/scala/2.10.5/scala-2.10.5.tgz" | tar -xz -C /usr/local/bin) \
+  && (curl -sSL "http://downloads.typesafe.com/scala/2.11.6/scala-2.11.6.tgz" | tar -xz -C /usr/local/bin) \
+  && ln -s /usr/local/bin/scala-2.11.6/bin/scala /usr/local/bin/scala
+
+ENV SCALA211_HOME=/usr/local/bin/scala-2.11.6
+ENV SCALA210_HOME=/usr/local/bin/scala-2.10.5
+ENV SCALA29_HOME=/usr/local/bin/scala-2.9.3
+ENV SCALA_HOME=$SCALA211_HOME/
+
+
 # Install other dev-related items
 RUN apt-get install -y \
   ant \
   autoconf \
   build-essential \
-  curl \
   erlang \
   ghc \
   git \
@@ -38,10 +53,7 @@ RUN apt-get install -y \
   vim \
   vim-doc
 
-RUN curl -sSL "ftp://mirror.reverse.net/pub/apache/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz" | tar -xz -C /usr/local/bin \
-  && ln -s /usr/local/bin/apache-maven-3.3.1/bin/mvn /usr/local/bin/mvn
-
-env M2_HOME /usr/local/bin/apache-maven-3.3.1
+# TODO: protobuf and gradle
 
 # Run as a regular user for now own
 ENV ME jghoman
